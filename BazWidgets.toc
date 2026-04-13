@@ -1,12 +1,12 @@
 ## Interface: 120001
 ## Title: BazWidgets
-## Notes: Widget pack for BazDrawer - Dungeon Finder, Repair, and more
+## Notes: Widget pack for BazWidgetDrawers - Dungeon Finder, Repair, and more
 ## Author: Baz4k
 ## Version: 001
 ## X-License: GPL v2
 ## Category: Baz Suite
 ## X-Category: Interface Enhancements
-## Dependencies: BazCore, BazDrawer
+## Dependencies: BazCore, BazWidgetDrawers
 ## IconTexture: Interface\Icons\INV_Misc_Gear_01
 ## SavedVariables: BazWidgetsDB
 
