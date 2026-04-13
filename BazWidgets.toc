@@ -7,6 +7,7 @@
 ## Category: Baz Suite
 ## X-Category: Interface Enhancements
 ## Dependencies: BazCore, BazWidgetDrawers
+## X-Curse-Project-ID: 1513522
 ## IconTexture: Interface\Icons\INV_Misc_Gear_01
 ## SavedVariables: BazWidgetsDB
 
