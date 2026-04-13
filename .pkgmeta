@@ -1,0 +1,6 @@
+package-as: BazWidgets
+ignore:
+  - .git
+  - .gitignore
+  - .pkgmeta
+  - LICENSE
