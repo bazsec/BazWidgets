@@ -210,11 +210,7 @@ function DFWidget:Build()
     f.queueLabel:SetJustifyH("CENTER")
     f.queueLabel:SetTextColor(unpack(CLR_DIM))
 
-    -- "Not queued" state
-    f.emptyText = f:CreateFontString(nil, "OVERLAY", "GameFontDisable")
-    f.emptyText:SetPoint("CENTER", f, "CENTER", 0, 0)
-    f.emptyText:SetText("Not queued")
-    f.emptyText:Hide()
+    -- (No "Not queued" state needed — dormant widget disappears entirely)
 
     -- 1-second timer for live updates
     local elapsed = 0
@@ -240,23 +236,7 @@ end
 function DFWidget:Refresh()
     if not frame then return end
 
-    if not Q.isQueued then
-        -- Hide queue elements, show empty state
-        frame.title:Hide()
-        frame.dungeon:Hide()
-        frame.leaveBtn:Hide()
-        frame.queueLabel:Hide()
-        frame.avgWaitLabel:Hide()
-        for _, slot in pairs(frame.roles) do
-            slot.icon:Hide()
-            slot.text:Hide()
-        end
-        frame.emptyText:Show()
-        self._desiredHeight = 30
-        return
-    end
-
-    frame.emptyText:Hide()
+    -- Widget is dormant when not queued, so if we're here we're queued
     frame.title:Show()
     frame.dungeon:Show()
     frame.leaveBtn:Show()
@@ -317,10 +297,7 @@ function DFWidget:GetDesiredHeight()
 end
 
 function DFWidget:GetStatusText()
-    if Q.isQueued then
-        return FormatTime(Q.queuedTime), unpack(CLR_ACCENT)
-    end
-    return "", 0.5, 0.5, 0.5
+    return FormatTime(Q.queuedTime), unpack(CLR_ACCENT)
 end
 
 ---------------------------------------------------------------------------
@@ -330,7 +307,7 @@ end
 function DFWidget:Init()
     local f = self:Build()
 
-    BazCore:RegisterDockableWidget({
+    local widgetDef = {
         id           = WIDGET_ID,
         label        = "Dungeon Finder",
         designWidth  = DESIGN_WIDTH,
@@ -338,9 +315,31 @@ function DFWidget:Init()
         frame        = f,
         GetDesiredHeight = function() return DFWidget:GetDesiredHeight() end,
         GetStatusText    = function() return DFWidget:GetStatusText() end,
+    }
+
+    -- Dormant widget: only registers when actively queued for a dungeon.
+    -- When not queued the widget has no slot, no title bar, no space.
+    local LBW = LibStub("LibBazWidget-1.0")
+    LBW:RegisterDormantWidget(widgetDef, {
+        events = {
+            "LFG_UPDATE",
+            "LFG_QUEUE_STATUS_UPDATE",
+            "LFG_PROPOSAL_SHOW",
+            "LFG_PROPOSAL_DONE",
+            "LFG_PROPOSAL_FAILED",
+            "LFG_PROPOSAL_SUCCEEDED",
+            "LFG_COMPLETION_REWARD",
+            "UPDATE_BATTLEFIELD_STATUS",
+            "PLAYER_ENTERING_WORLD",
+        },
+        condition = function()
+            UpdateQueue()
+            return Q.isQueued
+        end,
     })
 
-    -- Queue events
+    -- Separate event listener for refresh/proposal state (runs even
+    -- while the widget is active and registered)
     f:RegisterEvent("LFG_UPDATE")
     f:RegisterEvent("LFG_QUEUE_STATUS_UPDATE")
     f:RegisterEvent("LFG_PROPOSAL_SHOW")
