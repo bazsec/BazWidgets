@@ -13,3 +13,14 @@
 
 Widgets\DungeonFinder.lua
 Widgets\Repair.lua
+Widgets\GoldTracker.lua
+Widgets\Coordinates.lua
+Widgets\SpeedMonitor.lua
+Widgets\StatSummary.lua
+Widgets\CurrencyBar.lua
+Widgets\NotePad.lua
+Widgets\Stopwatch.lua
+Widgets\TodoList.lua
+Widgets\WeeklyChecklist.lua
+Widgets\CollectionCounter.lua
+Widgets\Calculator.lua
