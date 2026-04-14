@@ -2,7 +2,7 @@
 ## Title: BazWidgets
 ## Notes: Widget pack for BazWidgetDrawers - Dungeon Finder, Repair, and more
 ## Author: Baz4k
-## Version: 001
+## Version: 007
 ## X-License: GPL v2
 ## Category: Baz Suite
 ## X-Category: Interface Enhancements
@@ -24,3 +24,5 @@ Widgets\TodoList.lua
 Widgets\WeeklyChecklist.lua
 Widgets\CollectionCounter.lua
 Widgets\Calculator.lua
+
+UserGuide.lua
