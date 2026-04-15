@@ -2,7 +2,7 @@
 ## Title: BazWidgets
 ## Notes: Widget pack for BazWidgetDrawers - Dungeon Finder, Repair, and more
 ## Author: Baz4k
-## Version: 008
+## Version: 009
 ## X-License: GPL v2
 ## Category: Baz Suite
 ## X-Category: Interface Enhancements
@@ -13,6 +13,9 @@
 
 Widgets\DungeonFinder.lua
 Widgets\ActiveDelve.lua
+Widgets\Companion.lua
+Widgets\BountifulTracker.lua
+Widgets\DelveTimer.lua
 Widgets\Repair.lua
 Widgets\GoldTracker.lua
 Widgets\Coordinates.lua
