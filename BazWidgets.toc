@@ -2,7 +2,7 @@
 ## Title: BazWidgets
 ## Notes: Widget pack for BazWidgetDrawers - Dungeon Finder, Repair, and more
 ## Author: Baz4k
-## Version: 016
+## Version: 017
 ## X-License: GPL v2
 ## Category: Baz Suite
 ## X-Category: Interface Enhancements

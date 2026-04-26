@@ -17,7 +17,13 @@ local frame
 local lastSpeed = -1
 
 local function GetSpeed()
-    local current = GetUnitSpeed and GetUnitSpeed("player") or 0
+    -- GetUnitSpeed returns a "secret number" in Midnight 12.0 — direct
+    -- arithmetic throws when the calling context is tainted (which is
+    -- the case any time the OnUpdate loop reads it). Launder via
+    -- BazCore:SafeNumber to a plain Lua number first.
+    local raw = GetUnitSpeed and GetUnitSpeed("player") or 0
+    local current = BazCore.SafeNumber and BazCore:SafeNumber(raw) or 0
+    if not current then return 0 end
     return math.floor((current / BASE_RUN_SPEED) * 100 + 0.5)
 end
 
