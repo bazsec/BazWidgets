@@ -132,8 +132,8 @@ local function ScheduleReflow()
     end)
 end
 
-local settleTimer       -- one-shot scale-settle timer per tooltip session
-local sessionLocked     -- true once this tooltip's height has been settled
+local pendingRescale  -- set on session start; first OnSizeChanged consumes it
+local sessionLocked   -- set after the first rescale; freezes further rescales/resizes
 
 local function ApplyAnchorTo(tooltip)
     if not frame then return end
@@ -158,26 +158,20 @@ local function ApplyAnchorTo(tooltip)
     -- (some addons or quest UIs call SetDefaultAnchor multiple times
     -- per hover). Skip the rescale dance — the scale we settled on
     -- is still valid and reapplying it would re-trigger the text-wrap
-    -- feedback loop that produced the jitter.
+    -- feedback loop that produced the original jitter.
     if tooltip:IsShown() then return end
 
-    -- Fresh session — reset baselines, apply best-effort scale,
-    -- schedule the one-shot settle rescale. Width is often 0 here
-    -- because content hasn't been set yet, so ComputeFitScale may
-    -- return nil and we just rely on the settle pass.
-    lastAppliedScale = nil
+    -- Fresh session — reset baselines and prime the tooltip at a
+    -- known scale of 1.0. The actual fit-rescale happens on the very
+    -- next OnSizeChanged (i.e. the same frame Blizzard finishes the
+    -- tooltip's first layout pass), which feels instant to the user.
+    -- We deliberately do NOT compute a scale here: at SetDefaultAnchor
+    -- time the tooltip width is often still 0 because content hasn't
+    -- been set yet, so anything we did would be wasted work.
     sessionLocked    = false
-    ApplyScaleWithHysteresis(tooltip, ComputeFitScale(tooltip))
-
-    if settleTimer then settleTimer:Cancel() end
-    settleTimer = C_Timer.NewTimer(0.15, function()
-        settleTimer = nil
-        if not tooltip:IsShown() then return end
-        if not frame or not frame:IsVisible() then return end
-        ApplyScaleWithHysteresis(tooltip, ComputeFitScale(tooltip))
-        -- Lock height tracking once we've settled — see OnSizeChanged.
-        sessionLocked = true
-    end)
+    pendingRescale   = true
+    tooltip:SetScale(1.0)
+    lastAppliedScale = 1.0
 end
 
 local function InstallHooks()
@@ -200,21 +194,25 @@ local function InstallHooks()
     -- tooltip's rendered pixel height, so:
     --   designHeight * hostScale  ==  ttLogicalH * ttScale
     --   designHeight = ttLogicalH * ttScale / hostScale
-    -- Track height ONLY — no rescaling here. Rescaling on every
-    -- size change was the source of the original jitter (each SetScale
-    -- shifted font kerning enough to alter text wrapping, changed the
-    -- logical width, fired OnSizeChanged again, ad infinitum).
-    --
-    -- Even with that loop closed, we now LOCK the height tracking
-    -- once the settle pass has fired. Blizzard's tooltip can still
-    -- bounce its height by a couple of pixels as content streams in
-    -- after our settle window — letting that drive Reflow ends up
-    -- visually identical to scale jitter (the slot grows/shrinks
-    -- by a few px each tick). Locking after settle pins the slot at
-    -- whatever size matched the tooltip when it stabilised.
+    -- First OnSizeChanged after a session start consumes the
+    -- pendingRescale flag and snaps the tooltip to its fit scale.
+    -- That fires the same frame Blizzard finishes the tooltip's
+    -- first layout pass, so the user perceives the tooltip as
+    -- appearing pre-fitted (no visible "before" state). After that
+    -- the session locks: further OnSizeChanged events are ignored,
+    -- so a 1-2 px Blizzard auto-resize doesn't drive a Reflow chain.
+    -- A late-arriving content block (Zygor data, async item info)
+    -- past the lock will extend above the slot — acceptable; the
+    -- alternative (continued live tracking) is the source of the
+    -- residual jitter we've been chasing.
     GameTooltip:HookScript("OnSizeChanged", function(self)
         if not frame or not frame:IsVisible() then return end
         if sessionLocked then return end
+
+        if pendingRescale then
+            pendingRescale = false
+            ApplyScaleWithHysteresis(self, ComputeFitScale(self))
+        end
 
         local ttLogicalH = self:GetHeight() or 0
         local ttScale    = self:GetScale() or 1
@@ -227,17 +225,19 @@ local function InstallHooks()
             lastTooltipHeight = design
             ScheduleReflow()
         end
+
+        -- Lock for the rest of the session — first OnSizeChanged is
+        -- the canonical "tooltip has finished its initial layout"
+        -- moment; everything after is incremental wobble.
+        sessionLocked = true
     end)
 
     -- When the tooltip closes, fall back to the minimum slot height
-    -- and clear the scale hysteresis + cancel any pending settle.
+    -- and clear all per-session state so the next hover is fresh.
     GameTooltip:HookScript("OnHide", function()
         lastAppliedScale = nil
         sessionLocked    = false
-        if settleTimer then
-            settleTimer:Cancel()
-            settleTimer = nil
-        end
+        pendingRescale   = false
         if math.abs(lastTooltipHeight - DESIGN_HEIGHT) >= HEIGHT_HYST then
             lastTooltipHeight = DESIGN_HEIGHT
             ScheduleReflow()
