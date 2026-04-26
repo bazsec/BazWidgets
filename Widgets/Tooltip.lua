@@ -70,6 +70,34 @@ end
 -- bypass this — those keep their own anchor, which is fine.
 ---------------------------------------------------------------------------
 
+-- Floor for the dynamic scale — below this and the tooltip text gets
+-- hard to read at any reasonable drawer width.
+local MIN_SCALE = 0.5
+
+-- Compute the tooltip scale that makes its rendered pixel width match
+-- the slot's rendered pixel width. Returns nil if either width hasn't
+-- resolved yet (tooltip just opened, no content yet).
+local function ComputeFitScale(tooltip)
+    if not frame then return nil end
+    local naturalW = tooltip:GetWidth() or 0
+    if naturalW < 1 then return nil end
+
+    local frameW   = frame:GetWidth() or 0
+    local frameEff = frame:GetEffectiveScale() or 1
+    if frameW < 1 or frameEff < 0.001 then return nil end
+
+    local ttParent = tooltip:GetParent()
+    local ttParentEff = (ttParent and ttParent:GetEffectiveScale()) or 1
+    if ttParentEff < 0.001 then ttParentEff = 1 end
+
+    -- Solve for newScale such that
+    --   naturalW * newScale * ttParentEff   ==   frameW * frameEff
+    local s = (frameW * frameEff) / (naturalW * ttParentEff)
+    if s > 1.0 then s = 1.0 end           -- never enlarge past natural
+    if s < MIN_SCALE then s = MIN_SCALE end
+    return s
+end
+
 local function ApplyAnchorTo(tooltip)
     if not frame then return end
     -- Skip when the slot itself isn't visible. This covers two cases
@@ -79,6 +107,14 @@ local function ApplyAnchorTo(tooltip)
     -- In either case anchoring would resolve to an off-screen position
     -- and confuse the user.
     if not frame:IsVisible() then return end
+
+    -- Scale the tooltip to fit the slot width before re-anchoring.
+    -- Width may not be resolved at this point (SetDefaultAnchor often
+    -- runs before content is set), so we apply a best-effort scale
+    -- here and let OnSizeChanged refine it once content fills in.
+    local s = ComputeFitScale(tooltip)
+    if s then tooltip:SetScale(s) end
+
     tooltip:ClearAllPoints()
     -- BOTTOMRIGHT-anchor so the tooltip's bottom edge stays planted on
     -- our slot's bottom-right; content extends up and to the left as
@@ -97,18 +133,31 @@ local function InstallHooks()
         end
     end)
 
-    -- Track the live tooltip height so the widget can grow / shrink
-    -- alongside the visible tooltip. Drives _desiredHeight, which BWD's
-    -- WidgetHost reads to size the slot. We skip the Reflow when our
-    -- frame isn't visible — Reflow would needlessly thrash the rest
-    -- of the drawer if the user has disabled the widget or the drawer
-    -- is collapsed.
+    -- Once content fills in, re-fit the scale (we may have anchored
+    -- pre-content with no usable width) and recompute slot height so
+    -- the drawer slot grows to match the rendered tooltip.
+    --
+    -- BWD's host scales the widget's frame by `frame:GetScale()` —
+    -- our reported `_desiredHeight` is in design (pre-host-scale)
+    -- coordinates. We want the rendered slot height to equal the
+    -- tooltip's rendered pixel height, so:
+    --   designHeight * hostScale  ==  ttLogicalH * ttScale
+    --   designHeight = ttLogicalH * ttScale / hostScale
     GameTooltip:HookScript("OnSizeChanged", function(self)
         if not frame or not frame:IsVisible() then return end
-        local h = self:GetHeight() or DESIGN_HEIGHT
-        if h < DESIGN_HEIGHT then h = DESIGN_HEIGHT end
-        if math.abs(h - lastTooltipHeight) > 1 then
-            lastTooltipHeight = h
+
+        local s = ComputeFitScale(self)
+        if s then self:SetScale(s) end
+
+        local ttLogicalH = self:GetHeight() or 0
+        local ttScale    = self:GetScale() or 1
+        local hostScale  = frame:GetScale() or 1
+        if hostScale < 0.001 then hostScale = 1 end
+
+        local design = (ttLogicalH * ttScale) / hostScale
+        if design < DESIGN_HEIGHT then design = DESIGN_HEIGHT end
+        if math.abs(design - lastTooltipHeight) > 1 then
+            lastTooltipHeight = design
             if addon.WidgetHost and addon.WidgetHost.Reflow then
                 addon.WidgetHost:Reflow()
             end
