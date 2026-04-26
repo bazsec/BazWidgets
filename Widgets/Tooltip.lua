@@ -30,10 +30,11 @@ local lastTooltipHeight  = DESIGN_HEIGHT  -- last GameTooltip height we saw
 ---------------------------------------------------------------------------
 
 local function IsActive()
-    -- Per-widget toggle — defaults to true so the widget does its job
-    -- the moment the user enables it.
-    local v = addon:GetWidgetSetting(WIDGET_ID, "active", true)
-    return v ~= false
+    -- Per-widget toggle — defaults to OFF so users have to explicitly
+    -- opt in. Otherwise enabling the widget would silently start
+    -- redirecting tooltips and look like a "tooltips are broken" bug
+    -- to anyone who didn't read the description.
+    return addon:GetWidgetSetting(WIDGET_ID, "active", false) and true or false
 end
 
 ---------------------------------------------------------------------------
@@ -44,13 +45,9 @@ function Tooltip:Build()
     if frame then return frame end
     local f = CreateFrame("Frame", "BazWidgetsTooltipDock", UIParent)
     f:SetSize(DESIGN_WIDTH, DESIGN_HEIGHT)
-    -- Subtle dashed outline so an empty slot is visually present even
-    -- when no tooltip is showing — gives the user feedback that this
-    -- IS the dock and not a layout glitch.
-    f.placeholder = f:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
-    f.placeholder:SetPoint("CENTER")
-    f.placeholder:SetText("Hover for tooltip")
-    f.placeholder:SetTextColor(0.6, 0.6, 0.6, 0.8)
+    -- Slot is intentionally empty when no tooltip is showing — any
+    -- placeholder text would just be visual noise and would still be
+    -- visible when the user has the widget docked but inactive.
     frame = f
     return f
 end
