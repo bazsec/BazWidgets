@@ -52,7 +52,91 @@ local function GetLandingPage()
     })
 end
 
+---------------------------------------------------------------------------
+-- Widgets sub-page — enable/disable each pack widget
+--
+-- Single source of truth is BWD's `widgetEnabled` per-profile setting,
+-- so toggling here syncs with BWD's own Widgets page automatically.
+-- Disabling here removes the widget from BWD entirely (it's hidden
+-- from every drawer and unfloats if it was floating).
+---------------------------------------------------------------------------
+
+local function GetWidgetsPage()
+    local args = {
+        intro = {
+            order = 0.1,
+            type  = "lead",
+            text  = "Enable or disable each BazWidgets pack widget. Toggling here is shared with the BazWidgetDrawers Widgets page — disabled widgets do not appear in any drawer at all.",
+        },
+        widgetsHeader = {
+            order = 1,
+            type  = "header",
+            name  = "Pack Widgets",
+        },
+    }
+
+    local bwd = BazCore.GetAddon and BazCore:GetAddon("BazWidgetDrawers")
+    if not bwd then
+        args.bwdMissing = {
+            order = 2,
+            type  = "note",
+            style = "warning",
+            text  = "BazWidgetDrawers is not loaded. Widgets cannot be enabled or disabled until it loads.",
+        }
+        return { name = "Widgets", type = "group", args = args }
+    end
+
+    -- Collect every registered dockable widget owned by this pack
+    -- (id prefix `bazwidgets_` is the suite-wide convention).
+    local owned = {}
+    local all = (BazCore.GetDockableWidgets and BazCore:GetDockableWidgets()) or {}
+    for _, w in ipairs(all) do
+        if type(w.id) == "string" and w.id:sub(1, 11) == "bazwidgets_" then
+            owned[#owned + 1] = w
+        end
+    end
+    table.sort(owned, function(a, b)
+        return (a.label or a.id) < (b.label or b.id)
+    end)
+
+    if #owned == 0 then
+        args.empty = {
+            order = 2,
+            type  = "note",
+            style = "info",
+            text  = "No BazWidgets pack widgets registered yet. They register on PLAYER_LOGIN — try /reload if this list looks empty.",
+        }
+        return { name = "Widgets", type = "group", args = args }
+    end
+
+    local order = 10
+    for _, w in ipairs(owned) do
+        local id = w.id
+        local label = w.label or id
+        args["widget_" .. id] = {
+            order = order,
+            type  = "toggle",
+            name  = label,
+            desc  = "Show " .. label .. " in BazWidgetDrawers. Disabled widgets are hidden from every drawer and any floating window.",
+            get   = function() return bwd:IsWidgetEnabled(id) end,
+            set   = function(_, val)
+                if bwd.WidgetHost and bwd.WidgetHost.SetWidgetEnabled then
+                    bwd.WidgetHost:SetWidgetEnabled(id, val)
+                else
+                    bwd:SetWidgetEnabled(id, val)
+                end
+            end,
+        }
+        order = order + 1
+    end
+
+    return { name = "Widgets", type = "group", args = args }
+end
+
 addon.config.onLoad = function(self)
     BazCore:RegisterOptionsTable(ADDON_NAME, GetLandingPage)
     BazCore:AddToSettings(ADDON_NAME, "BazWidgets")
+
+    BazCore:RegisterOptionsTable(ADDON_NAME .. "-Widgets", GetWidgetsPage)
+    BazCore:AddToSettings(ADDON_NAME .. "-Widgets", "Widgets", ADDON_NAME)
 end
