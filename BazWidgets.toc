@@ -2,7 +2,7 @@
 ## Title: BazWidgets
 ## Notes: Widget pack for BazWidgetDrawers - Dungeon Finder, Repair, and more
 ## Author: Baz4k
-## Version: 012
+## Version: 013
 ## X-License: GPL v2
 ## Category: Baz Suite
 ## X-Category: Interface Enhancements
@@ -10,6 +10,8 @@
 ## X-Curse-Project-ID: 1513522
 ## IconTexture: Interface\Icons\INV_Misc_Gear_01
 ## SavedVariables: BazWidgetsDB
+
+Core.lua
 
 Widgets\DungeonFinder.lua
 Widgets\ActiveDelve.lua
