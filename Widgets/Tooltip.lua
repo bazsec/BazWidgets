@@ -48,6 +48,25 @@ function Tooltip:Build()
     -- Slot is intentionally empty when no tooltip is showing — any
     -- placeholder text would just be visual noise and would still be
     -- visible when the user has the widget docked but inactive.
+
+    -- When the drawer collapses, displayFrame:Hide() cascades through
+    -- its descendants and our slot becomes invisible. The GameTooltip
+    -- itself, however, lives under UIParent — anchoring it to a now-
+    -- invisible frame doesn't move it off-screen, so without this
+    -- hook the tooltip would hover at its last position even after
+    -- the drawer slid shut. OnHide fires when our visibility chain
+    -- breaks; if the live tooltip is still anchored to us at that
+    -- moment, dismiss it. The user's next hover after re-opening
+    -- the drawer will re-anchor naturally via SetDefaultAnchor.
+    f:HookScript("OnHide", function()
+        if GameTooltip and GameTooltip:IsShown() then
+            local _, anchor = GameTooltip:GetPoint(1)
+            if anchor == f then
+                GameTooltip:Hide()
+            end
+        end
+    end)
+
     frame = f
     return f
 end
