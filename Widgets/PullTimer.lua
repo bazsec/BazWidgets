@@ -103,7 +103,7 @@ function Pull:GetStatusText()
 end
 
 ---------------------------------------------------------------------------
--- Init — dormant: only register while in combat
+-- Init - dormant: only register while in combat
 ---------------------------------------------------------------------------
 
 function Pull:Init()

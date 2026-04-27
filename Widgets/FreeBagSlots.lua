@@ -42,9 +42,9 @@ end
 local function ColorForRatio(free, total)
     if total <= 0 then return 0.6, 0.6, 0.6 end
     local ratio = free / total
-    if ratio < 0.10 then return 1.00, 0.30, 0.30 end   -- < 10% free → red
-    if ratio < 0.25 then return 1.00, 0.85, 0.30 end   -- < 25% free → yellow
-    return 0.50, 0.95, 0.50                             -- plenty → green
+    if ratio < 0.10 then return 1.00, 0.30, 0.30 end   -- < 10% free > red
+    if ratio < 0.25 then return 1.00, 0.85, 0.30 end   -- < 25% free > yellow
+    return 0.50, 0.95, 0.50                             -- plenty > green
 end
 
 ---------------------------------------------------------------------------

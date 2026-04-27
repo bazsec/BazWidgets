@@ -23,7 +23,7 @@ local Timer = {}
 addon.DelveTimerWidget = Timer
 
 ---------------------------------------------------------------------------
--- Saved best times — account-wide, stored on BazCoreDB so they survive
+-- Saved best times - account-wide, stored on BazCoreDB so they survive
 -- per-character data wipes and propagate to all toons.
 ---------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ local function GetBestTimes()
 end
 
 -- Best times are keyed by scenarioID (so different variants of the
--- same-named delve don't lump together — each layout gets its own PB).
+-- same-named delve don't lump together - each layout gets its own PB).
 -- Falls back to name when no scenarioID is available.
 local function MakeKey(scenarioID, name)
     if scenarioID and scenarioID > 0 then
@@ -279,7 +279,7 @@ function Timer:GetOptionsArgs()
 end
 
 ---------------------------------------------------------------------------
--- Init — register dormant widget
+-- Init - register dormant widget
 ---------------------------------------------------------------------------
 
 function Timer:Init()
@@ -295,14 +295,14 @@ function Timer:Init()
         FetchScenario()
 
         if R.inDelve and not wasInDelve then
-            -- Just entered a delve — start a fresh run
+            -- Just entered a delve - start a fresh run
             ResetRun()
             StartRun()
         elseif R.inDelve and event == "SCENARIO_COMPLETED" then
-            -- Finished it — record the time
+            -- Finished it - record the time
             EndRun(true)
         elseif not R.inDelve and wasInDelve then
-            -- Left without completing — discard the run, no PB save
+            -- Left without completing - discard the run, no PB save
             ResetRun()
         end
 

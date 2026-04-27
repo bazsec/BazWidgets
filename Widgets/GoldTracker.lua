@@ -70,7 +70,7 @@ function GoldWidget:Build()
     local f = CreateFrame("Frame", "BazWidgetsGoldTracker", UIParent)
     f:SetSize(DESIGN_WIDTH, DESIGN_HEIGHT)
 
-    -- Coin icon (left) — use the high-res inv_misc_coin_01 icon texture.
+    -- Coin icon (left) - use the high-res inv_misc_coin_01 icon texture.
     -- The bag UI's atlas (`coin-gold`) is designed for a tiny inline
     -- display and looks pixelated when scaled up to widget size; the
     -- Blizzard icon texture is 64x64 native and stays crisp.

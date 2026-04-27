@@ -24,7 +24,7 @@ local CLR_XP_BG   = { 0.10, 0.10, 0.12, 0.85 }
 local CompanionWidget = {}
 addon.CompanionWidget = CompanionWidget
 
--- Debug logging — flip to true to print resolved companion data
+-- Debug logging - flip to true to print resolved companion data
 local DEBUG = true
 local function dprint(...)
     if DEBUG then
@@ -88,7 +88,7 @@ local function FetchData()
 
     -- C_DelvesUI.GetCompanionInfoForActivePlayer() returns a "info ID" that
     -- is NOT the same as the companionID accepted by *ForCompanion calls.
-    -- Those functions document companionID as Nilable = true — passing nil
+    -- Those functions document companionID as Nilable = true - passing nil
     -- means "use the active companion", which is exactly what we want.
     -- We pass nil throughout and only stash the info ID for status text.
     local cid = nil
@@ -121,7 +121,7 @@ local function FetchData()
                     D.xpMax = (rep.nextThreshold or 1) - (rep.reactionThreshold or 0)
                     if D.xpMax <= 0 then D.xpMax = 1 end
                 else
-                    -- Max level — show full bar
+                    -- Max level - show full bar
                     D.xpCur, D.xpMax = 1, 1
                 end
             end
@@ -216,12 +216,12 @@ function CompanionWidget:Build()
     local f = CreateFrame("Frame", nil, UIParent)
     f:SetSize(DESIGN_WIDTH, DESIGN_HEIGHT)
 
-    -- Portrait area — built from three stacked textures so we get a
+    -- Portrait area - built from three stacked textures so we get a
     -- clean circular portrait with a gold ring around it, no decorative
     -- atlas baggage:
-    --   1. ringBg  — slightly oversized gold disc, becomes the ring
-    --   2. portrait — the actual unit portrait, on top of ringBg
-    --   3. circleMask — clips both to a circle
+    --   1. ringBg  - slightly oversized gold disc, becomes the ring
+    --   2. portrait - the actual unit portrait, on top of ringBg
+    --   3. circleMask - clips both to a circle
     local RING_THICKNESS = 2
 
     -- Gold disc (becomes the visible ring)
@@ -244,7 +244,7 @@ function CompanionWidget:Build()
     f.portraitMask:SetAllPoints(f.portrait)
     f.portrait:AddMaskTexture(f.portraitMask)
 
-    -- Hidden — placeholder for the previous decorative ring; kept so other
+    -- Hidden - placeholder for the previous decorative ring; kept so other
     -- code that references f.portraitRing doesn't break.
     f.portraitRing = f.ringBg
 
@@ -364,7 +364,7 @@ function CompanionWidget:GetStatusText()
 end
 
 ---------------------------------------------------------------------------
--- Init — register dormant widget
+-- Init - register dormant widget
 ---------------------------------------------------------------------------
 
 function CompanionWidget:Init()

@@ -6,7 +6,7 @@ if not BazCore or not BazCore.RegisterUserGuide then return end
 
 BazCore:RegisterUserGuide("BazWidgets", {
     title = "BazWidgets",
-    intro = "A pack of 26 ready-to-dock widgets for BazWidgetDrawers — covering activities, character info, currency, navigation, weekly progress, and utilities. Many are dormant, registering themselves only when a relevant condition is met (queued, in combat, in a delve, hearthstone on cooldown, etc.) so they never waste drawer space.",
+    intro = "A pack of 26 ready-to-dock widgets for BazWidgetDrawers - covering activities, character info, currency, navigation, weekly progress, and utilities. Many are dormant, registering themselves only when a relevant condition is met (queued, in combat, in a delve, hearthstone on cooldown, etc.) so they never waste drawer space.",
     pages = {
         {
             title = "Welcome",
@@ -21,14 +21,14 @@ BazCore:RegisterUserGuide("BazWidgets", {
                     "Live status text in the title bar (count, value, summary)",
                     "Dynamic resizing based on content",
                 }},
-                { type = "note", style = "info", text = "Some widgets are |cffffd700dormant|r — they only appear in the drawer when relevant. Dormant widgets are marked with |cffffd700[D]|r in the Widgets settings list and can be reordered while dormant." },
+                { type = "note", style = "info", text = "Some widgets are |cffffd700dormant|r - they only appear in the drawer when relevant. Dormant widgets are marked with |cffffd700[D]|r in the Widgets settings list and can be reordered while dormant." },
             },
         },
         {
             title = "Activity & Group",
             blocks = {
                 { type = "h2", text = "Dungeon Finder" },
-                { type = "lead", text = "Dormant queue status panel — auto-appears when you queue for a dungeon." },
+                { type = "lead", text = "Dormant queue status panel - auto-appears when you queue for a dungeon." },
                 { type = "list", items = {
                     "Role fill indicators (tank / healer / DPS) with color-coded counts",
                     "Average wait time estimate",
@@ -40,7 +40,7 @@ BazCore:RegisterUserGuide("BazWidgets", {
                 { type = "note", style = "tip", text = "This widget replaces the standalone BazDungeonFinder addon. No slot is consumed when you're not queued." },
 
                 { type = "h2", text = "Pull Timer" },
-                { type = "lead", text = "Dormant combat-duration tracker — auto-shows when you enter combat, disappears when combat ends." },
+                { type = "lead", text = "Dormant combat-duration tracker - auto-shows when you enter combat, disappears when combat ends." },
                 { type = "list", items = {
                     "Live elapsed time, large gold display",
                     "Auto-shows on PLAYER_REGEN_DISABLED, auto-hides on PLAYER_REGEN_ENABLED",
@@ -48,7 +48,7 @@ BazCore:RegisterUserGuide("BazWidgets", {
                 }},
 
                 { type = "h2", text = "Active Delve" },
-                { type = "lead", text = "Dormant scenario panel — auto-shows when you're inside a delve (any active scenario)." },
+                { type = "lead", text = "Dormant scenario panel - auto-shows when you're inside a delve (any active scenario)." },
                 { type = "list", items = {
                     "Scenario name + objectives list",
                     "Live objective progress (counts, percentages)",
@@ -64,7 +64,7 @@ BazCore:RegisterUserGuide("BazWidgets", {
                 }},
 
                 { type = "h2", text = "Delve Companion" },
-                { type = "lead", text = "Dormant companion display — auto-shows in delves to surface your active companion." },
+                { type = "lead", text = "Dormant companion display - auto-shows in delves to surface your active companion." },
                 { type = "list", items = {
                     "Brann (or the Midnight companion) icon and name",
                     "Companion-level / specialization at a glance",
@@ -75,7 +75,7 @@ BazCore:RegisterUserGuide("BazWidgets", {
                 { type = "lead", text = "Dormant currency surface for delve-related drops." },
                 { type = "list", items = {
                     "Restored Coffer Keys (currency 3028)",
-                    "Coffer Key Shards (currency 3310 — 100 shards = 1 key)",
+                    "Coffer Key Shards (currency 3310 - 100 shards = 1 key)",
                     "Auto-shows in delve content",
                 }},
             },
@@ -86,7 +86,7 @@ BazCore:RegisterUserGuide("BazWidgets", {
                 { type = "h2", text = "Repair" },
                 { type = "list", items = {
                     "Three-column durability display: paper-doll / damaged-slot list / durability percent",
-                    "Worst-damaged slots first, color-graded green→red",
+                    "Worst-damaged slots first, color-graded green>red",
                     "Average durability in the title bar",
                     "Three paper-doll modes: custom icon grid, native DurabilityFrame, or none",
                     "Optional taint-safe suppression of Blizzard's default durability figure",
@@ -106,12 +106,12 @@ BazCore:RegisterUserGuide("BazWidgets", {
                 }},
                 { type = "h2", text = "Tooltip" },
                 { type = "list", items = {
-                    "A docked slot that anchors the global GameTooltip — item, unit, spell, and quest hovers appear inside the drawer instead of at the cursor",
+                    "A docked slot that anchors the global GameTooltip - item, unit, spell, and quest hovers appear inside the drawer instead of at the cursor",
                     "Defaults to the drawer's bottom edge: tooltip's bottom stays planted, content grows upward as the tooltip extends",
                     "Slot height tracks the live tooltip height; other bottom-stack widgets shift up as the tooltip grows",
                     "Auto-dismisses when the drawer collapses or the widget is disabled",
                 }},
-                { type = "note", style = "info", text = "The Tooltip widget only redirects |cffffd700default-anchored|r tooltips. Some addons hardcode their own anchor (e.g. ANCHOR_RIGHT off a button) and will keep it — typical coverage is ~80% (bags, action bars, unit frames, quest log, character pane)." },
+                { type = "note", style = "info", text = "The Tooltip widget only redirects |cffffd700default-anchored|r tooltips. Some addons hardcode their own anchor (e.g. ANCHOR_RIGHT off a button) and will keep it - typical coverage is ~80% (bags, action bars, unit frames, quest log, character pane)." },
                 { type = "h2", text = "Collection Counter" },
                 { type = "list", items = {
                     "Mount and pet collection progress",
@@ -123,20 +123,20 @@ BazCore:RegisterUserGuide("BazWidgets", {
                 { type = "list", items = {
                     "Both equipped trinkets shown side-by-side with icons",
                     "Live cooldown sweep on each trinket",
-                    "Click a trinket to use it (out-of-combat only — combat-safe)",
+                    "Click a trinket to use it (out-of-combat only - combat-safe)",
                     "Auto-updates when you swap trinkets",
                 }},
 
                 { type = "h2", text = "Free Bag Slots" },
                 { type = "list", items = {
                     "Always-on counter showing empty inventory slots remaining",
-                    "Color shifts as you fill up — green when comfortable, red when nearly full",
+                    "Color shifts as you fill up - green when comfortable, red when nearly full",
                     "Counts across every normal bag slot",
                 }},
 
                 { type = "h2", text = "Hearthstone Cooldown" },
                 { type = "list", items = {
-                    "Dormant — auto-shows while your Hearthstone is on cooldown",
+                    "Dormant - auto-shows while your Hearthstone is on cooldown",
                     "Live countdown to ready",
                     "Auto-hides the moment the cooldown clears, keeping your drawer tidy",
                 }},
@@ -164,7 +164,7 @@ BazCore:RegisterUserGuide("BazWidgets", {
                 { type = "list", items = {
                     "Always-on display of a single user-picked faction",
                     "Faction name, current standing, and progress to next level",
-                    "Ideal for grinding a specific reputation — pick the faction once, then watch progress build",
+                    "Ideal for grinding a specific reputation - pick the faction once, then watch progress build",
                     "Settings page lets you pick from any faction you currently have standing with",
                 }},
             },
@@ -243,7 +243,7 @@ BazCore:RegisterUserGuide("BazWidgets", {
                 { type = "list", items = {
                     "Always-on FPS + home-latency + world-latency display",
                     "Color-coded so you can see at a glance whether your client is healthy",
-                    "Compact format — fits in a small drawer slot",
+                    "Compact format - fits in a small drawer slot",
                 }},
             },
         },

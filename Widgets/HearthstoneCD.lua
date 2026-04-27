@@ -111,7 +111,7 @@ function Hearth:GetStatusText()
 end
 
 ---------------------------------------------------------------------------
--- Init — dormant: only register while CD > 0
+-- Init - dormant: only register while CD > 0
 ---------------------------------------------------------------------------
 
 function Hearth:Init()

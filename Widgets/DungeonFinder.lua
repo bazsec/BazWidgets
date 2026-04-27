@@ -210,7 +210,7 @@ function DFWidget:Build()
     f.queueLabel:SetJustifyH("CENTER")
     f.queueLabel:SetTextColor(unpack(CLR_DIM))
 
-    -- (No "Not queued" state needed — dormant widget disappears entirely)
+    -- (No "Not queued" state needed - dormant widget disappears entirely)
 
     -- 1-second timer for live updates
     local elapsed = 0

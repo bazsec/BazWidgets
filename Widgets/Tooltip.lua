@@ -7,7 +7,7 @@
 -- at the cursor or screen edge.
 --
 -- Defaults to bottom-of-drawer docking (the natural place for a
--- tooltip — stacks upward as content grows). Per-widget toggle to
+-- tooltip - stacks upward as content grows). Per-widget toggle to
 -- pause the anchor override without removing the widget.
 
 local addon = BazCore:GetAddon("BazWidgetDrawers")
@@ -33,13 +33,13 @@ function Tooltip:Build()
     if frame then return frame end
     local f = CreateFrame("Frame", "BazWidgetsTooltipDock", UIParent)
     f:SetSize(DESIGN_WIDTH, DESIGN_HEIGHT)
-    -- Slot is intentionally empty when no tooltip is showing — any
+    -- Slot is intentionally empty when no tooltip is showing - any
     -- placeholder text would just be visual noise and would still be
     -- visible when the user has the widget docked but inactive.
 
     -- When the drawer collapses, displayFrame:Hide() cascades through
     -- its descendants and our slot becomes invisible. The GameTooltip
-    -- itself, however, lives under UIParent — anchoring it to a now-
+    -- itself, however, lives under UIParent - anchoring it to a now-
     -- invisible frame doesn't move it off-screen, so without this
     -- hook the tooltip would hover at its last position even after
     -- the drawer slid shut. OnHide fires when our visibility chain
@@ -67,10 +67,10 @@ end
 -- hook-overriding the anchor inside that function we capture the
 -- common cases (bag, action bar, unit frame, quest log, etc.). Some
 -- addons that hardcode `GameTooltip:SetOwner(self, "ANCHOR_RIGHT")`
--- bypass this — those keep their own anchor, which is fine.
+-- bypass this - those keep their own anchor, which is fine.
 ---------------------------------------------------------------------------
 
--- Floor for the dynamic scale — below this and the tooltip text gets
+-- Floor for the dynamic scale - below this and the tooltip text gets
 -- hard to read at any reasonable drawer width.
 local MIN_SCALE   = 0.5
 local SCALE_STEP  = 0.05  -- snap-to-grid: small width fluctuations don't cross a step
@@ -121,7 +121,7 @@ local lastAppliedScale = nil
 --
 -- 1. Big tooltips (item / unit / quest with async content) start
 --    narrow and grow over the first few frames as their content
---    streams in. We need to keep rescaling — but each rescale shrinks
+--    streams in. We need to keep rescaling - but each rescale shrinks
 --    further to keep the tooltip fitting the slot.
 --
 -- 2. The cooking-tooltip jitter was caused by naturalW oscillating
@@ -166,7 +166,7 @@ local function ApplyAnchorTo(tooltip)
     -- and confuse the user.
     if not frame:IsVisible() then return end
 
-    -- Always re-apply the anchor — cheap, and protects us from a
+    -- Always re-apply the anchor - cheap, and protects us from a
     -- third-party hook that re-anchored the tooltip elsewhere.
     tooltip:ClearAllPoints()
     -- BOTTOMRIGHT-anchor so the tooltip's bottom edge stays planted on
@@ -177,12 +177,12 @@ local function ApplyAnchorTo(tooltip)
 
     -- If the tooltip is already shown this is a mid-session re-anchor
     -- (some quest UIs call SetDefaultAnchor on every cursor update).
-    -- Don't reset the scale baseline — that would let the tooltip
+    -- Don't reset the scale baseline - that would let the tooltip
     -- grow back up if the addon's re-anchor happened to coincide with
     -- a brief naturalW dip.
     if tooltip:IsShown() then return end
 
-    -- Fresh session — reset GameTooltip's scale to 1.0 as a known
+    -- Fresh session - reset GameTooltip's scale to 1.0 as a known
     -- baseline (Blizzard never resets it between tooltips, so we'd
     -- otherwise inherit whatever the previous session left behind).
     -- Then prime lastAppliedScale to 1.0 so the monotonic guard
@@ -205,7 +205,7 @@ local function InstallHooks()
     -- pre-content with no usable width) and recompute slot height so
     -- the drawer slot grows to match the rendered tooltip.
     --
-    -- BWD's host scales the widget's frame by `frame:GetScale()` —
+    -- BWD's host scales the widget's frame by `frame:GetScale()` -
     -- our reported `_desiredHeight` is in design (pre-host-scale)
     -- coordinates. We want the rendered slot height to equal the
     -- tooltip's rendered pixel height, so:
@@ -274,7 +274,7 @@ function Tooltip:Init()
         designWidth  = DESIGN_WIDTH,
         designHeight = DESIGN_HEIGHT,
         frame        = f,
-        -- Tooltip belongs at the drawer bottom by default — grows
+        -- Tooltip belongs at the drawer bottom by default - grows
         -- upward as content expands, which matches how BOTTOMRIGHT-
         -- pinned tooltips naturally behave.
         defaultDockToBottom = true,

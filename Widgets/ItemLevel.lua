@@ -31,7 +31,7 @@ local function GetLevels()
 end
 
 local function FormatLevel(level)
-    if level <= 0 then return "—" end
+    if level <= 0 then return "-" end
     return string.format("%.1f", level)
 end
 
@@ -164,7 +164,7 @@ local function UpdateSlot(slot)
     end
 
     -- Quality color via ITEM_QUALITY_COLORS. Quality is the 3rd return of
-    -- GetItemInfo. Some items might not be cached yet — fall back to
+    -- GetItemInfo. Some items might not be cached yet - fall back to
     -- white text rather than skipping.
     local _, _, quality = GetItemInfo(link)
     local color = quality and ITEM_QUALITY_COLORS[quality] or nil
@@ -256,7 +256,7 @@ function ItemLevel:Init()
     f:HookScript("OnEvent", function(_, event, unit)
         if event == "UNIT_INVENTORY_CHANGED" and unit ~= "player" then return end
         ItemLevel:Refresh()
-        -- Refresh paper-doll overlays too — equipping new gear should
+        -- Refresh paper-doll overlays too - equipping new gear should
         -- update both the headline and the slot labels.
         ItemLevel:UpdatePaperDollOverlays()
     end)

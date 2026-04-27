@@ -3,7 +3,7 @@
 -- Dormant widget that auto-shows when you're in any active scenario
 -- (delves are scenarios). Shows the scenario name + objectives, and
 -- delegates the tier badge / lives / affix icons to Blizzard's own
--- UIWidgetContainer registered for the scenario's widget set — same
+-- UIWidgetContainer registered for the scenario's widget set - same
 -- approach BazWidgetDrawers' Quest Tracker uses.
 
 local addon = BazCore:GetAddon("BazWidgetDrawers")
@@ -116,14 +116,14 @@ local objectiveLines = {}
 function Delve:Build()
     if frame then return frame end
 
-    -- No backdrop — let the widget sit flush against the drawer's own
+    -- No backdrop - let the widget sit flush against the drawer's own
     -- background. Blizzard's widget container provides its own visual
     -- styling for the delve card.
     local f = CreateFrame("Frame", nil, UIParent)
     f:SetSize(DESIGN_WIDTH, DESIGN_HEIGHT)
 
     -- Blizzard UIWidget container for the delve card (name, tier badge,
-    -- lives, affix icons). Same pattern BWD's Quest Tracker uses — we
+    -- lives, affix icons). Same pattern BWD's Quest Tracker uses - we
     -- register for the scenario's widget set and Blizzard renders it.
     local widgetOk, widgetContainer = pcall(CreateFrame, "Frame", nil, f, "UIWidgetContainerTemplate")
     if widgetOk and widgetContainer then
@@ -163,7 +163,7 @@ local function GetOrCreateObjectiveLine(i)
     row.bullet = row:CreateTexture(nil, "ARTWORK")
     row.bullet:SetSize(NUB_SIZE, NUB_SIZE)
     row.bullet:SetPoint("TOPLEFT", 0, -2)
-    -- Default atlas — Refresh() swaps to the check atlas when complete
+    -- Default atlas - Refresh() swaps to the check atlas when complete
     row.bullet:SetAtlas("ui-questtracker-objective-nub", false)
 
     row.text = row:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
@@ -266,7 +266,7 @@ function Delve:GetStatusText()
 end
 
 ---------------------------------------------------------------------------
--- Init — register dormant widget
+-- Init - register dormant widget
 ---------------------------------------------------------------------------
 
 function Delve:Init()

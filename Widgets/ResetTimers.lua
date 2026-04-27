@@ -1,7 +1,7 @@
 -- BazWidgets Widget: Reset Timers
 --
 -- Always-on widget showing time until next daily and weekly resets.
--- Color shifts from green → yellow → red as the deadline approaches.
+-- Color shifts from green > yellow > red as the deadline approaches.
 
 local addon = BazCore:GetAddon("BazWidgetDrawers")
 if not addon then return end
@@ -11,7 +11,7 @@ local DESIGN_WIDTH = 220
 local DESIGN_HEIGHT = 56
 local PAD          = 8
 
--- Color thresholds (seconds remaining) → color
+-- Color thresholds (seconds remaining) > color
 local function ColorFor(seconds, isWeekly)
     -- For daily: < 1h = red, < 4h = yellow, else green
     -- For weekly: < 6h = red, < 24h = yellow, else green

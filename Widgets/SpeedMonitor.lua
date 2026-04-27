@@ -17,7 +17,7 @@ local frame
 local lastSpeed = -1
 
 local function GetSpeed()
-    -- GetUnitSpeed returns a "secret number" in Midnight 12.0 — direct
+    -- GetUnitSpeed returns a "secret number" in Midnight 12.0 - direct
     -- arithmetic throws when the calling context is tainted (which is
     -- the case any time the OnUpdate loop reads it). Launder via
     -- BazCore:SafeNumber to a plain Lua number first.

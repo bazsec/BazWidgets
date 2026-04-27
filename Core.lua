@@ -1,5 +1,5 @@
 ---------------------------------------------------------------------------
--- BazWidgets — widget pack for BazWidgetDrawers
+-- BazWidgets - widget pack for BazWidgetDrawers
 --
 -- Registers with BazCore so the pack appears as its own tab in the
 -- BazCore options window. Individual widgets register themselves with
@@ -45,7 +45,7 @@ local function GetLandingPage()
             "Collection Counter, Calculator.",
         guide = {
             { "Open BazWidgetDrawers", "All widgets dock inside BWD's drawer" },
-            { "Enable widgets",         "BazWidgetDrawers → Widgets → toggle each one" },
+            { "Enable widgets",         "BazWidgetDrawers > Widgets > toggle each one" },
             { "Configure each widget",  "Click a widget in the list for its per-widget settings" },
             { "User Manual",            "See the User Manual tab for a tour of every widget" },
         },
@@ -53,7 +53,7 @@ local function GetLandingPage()
 end
 
 ---------------------------------------------------------------------------
--- Widgets sub-page — enable/disable each pack widget
+-- Widgets sub-page - enable/disable each pack widget
 --
 -- Single source of truth is BWD's `widgetEnabled` per-profile setting,
 -- so toggling here syncs with BWD's own Widgets page automatically.
@@ -66,7 +66,7 @@ local function GetWidgetsPage()
         intro = {
             order = 0.1,
             type  = "lead",
-            text  = "Enable or disable each BazWidgets pack widget. Toggling here is shared with the BazWidgetDrawers Widgets page — disabled widgets do not appear in any drawer at all.",
+            text  = "Enable or disable each BazWidgets pack widget. Toggling here is shared with the BazWidgetDrawers Widgets page - disabled widgets do not appear in any drawer at all.",
         },
         widgetsHeader = {
             order = 1,
@@ -104,7 +104,7 @@ local function GetWidgetsPage()
             order = 2,
             type  = "note",
             style = "info",
-            text  = "No BazWidgets pack widgets registered yet. They register on PLAYER_LOGIN — try /reload if this list looks empty.",
+            text  = "No BazWidgets pack widgets registered yet. They register on PLAYER_LOGIN - try /reload if this list looks empty.",
         }
         return { name = "Widgets", type = "group", args = args }
     end
