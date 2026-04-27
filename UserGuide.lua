@@ -6,7 +6,7 @@ if not BazCore or not BazCore.RegisterUserGuide then return end
 
 BazCore:RegisterUserGuide("BazWidgets", {
     title = "BazWidgets",
-    intro = "A pack of 13 ready-to-dock widgets for BazWidgetDrawers — covering activities, character info, currency, navigation, weekly progress, and utilities.",
+    intro = "A pack of 26 ready-to-dock widgets for BazWidgetDrawers — covering activities, character info, currency, navigation, weekly progress, and utilities. Many are dormant, registering themselves only when a relevant condition is met (queued, in combat, in a delve, hearthstone on cooldown, etc.) so they never waste drawer space.",
     pages = {
         {
             title = "Welcome",
@@ -38,6 +38,46 @@ BazCore:RegisterUserGuide("BazWidgets", {
                     "Title turns green on Group Found",
                 }},
                 { type = "note", style = "tip", text = "This widget replaces the standalone BazDungeonFinder addon. No slot is consumed when you're not queued." },
+
+                { type = "h2", text = "Pull Timer" },
+                { type = "lead", text = "Dormant combat-duration tracker — auto-shows when you enter combat, disappears when combat ends." },
+                { type = "list", items = {
+                    "Live elapsed time, large gold display",
+                    "Auto-shows on PLAYER_REGEN_DISABLED, auto-hides on PLAYER_REGEN_ENABLED",
+                    "Title-bar status text mirrors the elapsed time so you can read it even when widget body is collapsed",
+                }},
+
+                { type = "h2", text = "Active Delve" },
+                { type = "lead", text = "Dormant scenario panel — auto-shows when you're inside a delve (any active scenario)." },
+                { type = "list", items = {
+                    "Scenario name + objectives list",
+                    "Live objective progress (counts, percentages)",
+                    "Auto-hides when you leave the scenario",
+                }},
+
+                { type = "h2", text = "Delve Timer" },
+                { type = "lead", text = "Dormant per-delve run timer with personal-best comparison." },
+                { type = "list", items = {
+                    "Tracks the elapsed time of your current delve run",
+                    "Compares against your best time on that delve",
+                    "Color shifts based on whether you're ahead of or behind your record",
+                }},
+
+                { type = "h2", text = "Delve Companion" },
+                { type = "lead", text = "Dormant companion display — auto-shows in delves to surface your active companion." },
+                { type = "list", items = {
+                    "Brann (or the Midnight companion) icon and name",
+                    "Companion-level / specialization at a glance",
+                    "Auto-hides outside delves",
+                }},
+
+                { type = "h2", text = "Bountiful Tracker" },
+                { type = "lead", text = "Dormant currency surface for delve-related drops." },
+                { type = "list", items = {
+                    "Restored Coffer Keys (currency 3028)",
+                    "Coffer Key Shards (currency 3310 — 100 shards = 1 key)",
+                    "Auto-shows in delve content",
+                }},
             },
         },
         {
@@ -78,6 +118,28 @@ BazCore:RegisterUserGuide("BazWidgets", {
                     "Owned / total / % display",
                     "Force-loads Blizzard_Collections so totals are accurate",
                 }},
+
+                { type = "h2", text = "Trinket Tracker" },
+                { type = "list", items = {
+                    "Both equipped trinkets shown side-by-side with icons",
+                    "Live cooldown sweep on each trinket",
+                    "Click a trinket to use it (out-of-combat only — combat-safe)",
+                    "Auto-updates when you swap trinkets",
+                }},
+
+                { type = "h2", text = "Free Bag Slots" },
+                { type = "list", items = {
+                    "Always-on counter showing empty inventory slots remaining",
+                    "Color shifts as you fill up — green when comfortable, red when nearly full",
+                    "Counts across every normal bag slot",
+                }},
+
+                { type = "h2", text = "Hearthstone Cooldown" },
+                { type = "list", items = {
+                    "Dormant — auto-shows while your Hearthstone is on cooldown",
+                    "Live countdown to ready",
+                    "Auto-hides the moment the cooldown clears, keeping your drawer tidy",
+                }},
             },
         },
         {
@@ -96,6 +158,14 @@ BazCore:RegisterUserGuide("BazWidgets", {
                     "Quantity / max quantity with progress",
                     "Falls back to backpack tracker if no currencies selected",
                     "Dynamically resizes based on tracked count",
+                }},
+
+                { type = "h2", text = "Tracked Reputation" },
+                { type = "list", items = {
+                    "Always-on display of a single user-picked faction",
+                    "Faction name, current standing, and progress to next level",
+                    "Ideal for grinding a specific reputation — pick the faction once, then watch progress build",
+                    "Settings page lets you pick from any faction you currently have standing with",
                 }},
             },
         },
@@ -126,6 +196,13 @@ BazCore:RegisterUserGuide("BazWidgets", {
                     "Progress display (e.g. 2/3) with green check when slot is filled",
                     "Total slots completed in the title bar (e.g. 5/9)",
                     "Updates on Weekly Rewards events",
+                }},
+
+                { type = "h2", text = "Reset Timers" },
+                { type = "list", items = {
+                    "Always-on countdown to next daily reset and next weekly reset",
+                    "Color shifts from green to yellow to red as the deadline approaches",
+                    "Compact format suits a stack of small status widgets",
                 }},
             },
         },
@@ -160,6 +237,13 @@ BazCore:RegisterUserGuide("BazWidgets", {
                     "Color-coded buttons: gold operators, green equals, dim red function keys",
                     "0 button spans 2 columns (classic calculator layout)",
                     "Handles divide by zero, negation, decimals",
+                }},
+
+                { type = "h2", text = "Performance" },
+                { type = "list", items = {
+                    "Always-on FPS + home-latency + world-latency display",
+                    "Color-coded so you can see at a glance whether your client is healthy",
+                    "Compact format — fits in a small drawer slot",
                 }},
             },
         },

@@ -4,7 +4,7 @@
 
 ![WoW](https://img.shields.io/badge/WoW-12.0_Midnight-blue) ![License](https://img.shields.io/badge/License-GPL_v2-green) ![Version](https://img.shields.io/github/v/tag/bazsec/BazWidgets?label=Version&color=orange)
 
-A widget pack addon for BazWidgetDrawers - **13 ready-to-dock widgets** covering activities, character info, utilities, and tools.
+A widget pack addon for BazWidgetDrawers - **26 ready-to-dock widgets** covering activities, character info, currency, navigation, weekly progress, and utilities. Many are dormant, registering themselves only when relevant (queued, in combat, in a delve, hearthstone on cooldown, etc.) so they never waste drawer space.
 
 BazWidgets serves two purposes: it provides useful widgets that extend BazWidgetDrawers beyond its core set, and it acts as a reference implementation for third-party addon authors who want to create their own widget packs using the LibBazWidget-1.0 API.
 
@@ -44,6 +44,41 @@ Queue status panel that auto-appears when you queue for a dungeon via LFG.
 *   Leave Queue button
 *   Title switches to green "Group Found!" on proposal
 
+#### Pull Timer
+Combat-duration tracker that auto-shows on combat enter.
+
+*   **Dormant** - registers on `PLAYER_REGEN_DISABLED`, unregisters on `PLAYER_REGEN_ENABLED`
+*   Live elapsed-time gold display with title-bar mirror
+*   Zero space taken outside combat
+
+#### Active Delve
+Scenario panel that auto-shows when you're inside any active scenario (delves are scenarios).
+
+*   **Dormant** - active in delves, inactive elsewhere
+*   Scenario name + objectives list with live progress
+*   Auto-hides when you leave
+
+#### Delve Timer
+Per-delve run timer with personal-best comparison.
+
+*   **Dormant** - active inside delves
+*   Tracks elapsed time of the current run
+*   Compares against your best for that delve, color-shifts ahead/behind
+
+#### Delve Companion
+Companion display that auto-shows in delves.
+
+*   **Dormant** - active inside delves
+*   Brann (or the Midnight companion) icon + name
+*   Companion-level / specialization at a glance
+
+#### Bountiful Tracker
+Currency tracker for delve-related drops.
+
+*   **Dormant** - auto-shows in delve content
+*   Restored Coffer Keys (currency 3028)
+*   Coffer Key Shards (currency 3310 — 100 shards = 1 key)
+
 ### Character & Gear
 
 #### Repair
@@ -70,6 +105,26 @@ Mount and pet collection progress at a glance.
 *   Force-loads Blizzard_Collections so totals are accurate
 *   Status text shows mount/pet counts compactly
 
+#### Trinket Tracker
+Both equipped trinkets with live cooldown sweep.
+
+*   Side-by-side icons for trinket slots 13 and 14
+*   Live cooldown sweep on each
+*   Click a trinket to use it (out-of-combat only — combat-safe)
+*   Auto-updates when you swap trinkets
+
+#### Free Bag Slots
+Empty inventory slots remaining across all your normal bags.
+
+*   Always-on counter
+*   Color shifts as you fill up (green → yellow → red)
+
+#### Hearthstone Cooldown
+Hearthstone CD timer.
+
+*   **Dormant** - auto-shows while your Hearthstone is on cooldown, hides once ready
+*   Live countdown — keeps your drawer tidy when there's nothing to track
+
 ### Currency & Economy
 
 #### Gold Tracker
@@ -87,6 +142,13 @@ Configurable currency tracker with icon list.
 *   Quantity / max quantity with progress
 *   Falls back to backpack tracker if no currencies are selected
 *   Dynamically resizes based on the number of tracked currencies
+
+#### Tracked Reputation
+A single user-picked faction's standing and progress to next level.
+
+*   Always-on, ideal for grinding a specific reputation
+*   Faction name, current standing, progress bar to the next level
+*   Settings page picker pulls from every faction you have standing with
 
 ### Navigation & Movement
 
@@ -113,6 +175,13 @@ Great Vault progress for Raid, Mythic+, and World rewards.
 *   Progress display (e.g. 2/3) with green check when slot is filled
 *   Total slots completed shown in the title bar (e.g. 5/9)
 *   Updates on Weekly Rewards events
+
+#### Reset Timers
+Time until next daily and weekly resets.
+
+*   Always-on countdown
+*   Color shifts from green to yellow to red as deadlines approach
+*   Compact — fits in a small drawer slot
 
 ### Utilities
 
@@ -148,6 +217,20 @@ Basic 4-function calculator with display panel.
 *   Color-coded buttons: gold operators, green equals, dim red function keys
 *   0 button spans 2 columns (classic calculator layout)
 *   Handles divide by zero, negation, decimal points
+
+#### Performance
+FPS + home-latency + world-latency display.
+
+*   Always-on, color-coded so you can read client health at a glance
+*   Compact — fits a small drawer slot
+
+#### Tooltip
+A docked slot that anchors the global GameTooltip into the drawer.
+
+*   Hooks `GameTooltip_SetDefaultAnchor` so default-anchored tooltips appear in the drawer instead of at the cursor
+*   Defaults to the bottom edge — tooltip's bottom stays planted, content grows upward
+*   Slot height tracks the live tooltip height; other bottom-stack widgets shift up as the tooltip grows
+*   ~80% coverage (bags, action bars, unit frames, quest log, character pane); some addons hard-code their own anchor and won't be redirected
 
 ***
 
