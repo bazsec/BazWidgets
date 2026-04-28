@@ -87,9 +87,20 @@ function Perf:Refresh()
     if not frame then return end
 
     local fps = GetFramerate and GetFramerate() or 0
-    local _, _, homeMs, worldMs = (GetNetStats and GetNetStats()) or 0, 0, 0, 0
-    homeMs = homeMs or 0
-    worldMs = worldMs or 0
+
+    -- GetNetStats() returns (bandwidthIn, bandwidthOut, homeLatency,
+    -- worldLatency). The previous one-liner attempted a nil-guarded
+    -- destructure with `(GetNetStats and GetNetStats()) or 0, 0, 0, 0`
+    -- - that parses as (firstReturnOnly or 0), 0, 0, 0 and `or` only
+    -- propagates the first return value of GetNetStats, so homeMs /
+    -- worldMs always landed on the literal trailing 0s and rendered
+    -- as "0 ms" forever. Explicit if-guard fixes it.
+    local homeMs, worldMs = 0, 0
+    if GetNetStats then
+        local _, _, h, w = GetNetStats()
+        homeMs  = h or 0
+        worldMs = w or 0
+    end
 
     frame.fps:SetText(string.format("%d", math.floor(fps + 0.5)))
     frame.fps:SetTextColor(ColorForFPS(fps))

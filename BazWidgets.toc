@@ -2,7 +2,7 @@
 ## Title: BazWidgets
 ## Notes: Widget pack for BazWidgetDrawers - Dungeon Finder, Repair, and more
 ## Author: Baz4k
-## Version: 031
+## Version: 032
 ## X-License: GPL v2
 ## Category: Baz Suite
 ## X-Category: Interface Enhancements
@@ -22,6 +22,7 @@ Widgets\HearthstoneCD.lua
 Widgets\ResetTimers.lua
 Widgets\FreeBagSlots.lua
 Widgets\Performance.lua
+Widgets\FPS.lua
 Widgets\PullTimer.lua
 Widgets\TrinketTracker.lua
 Widgets\TrackedReputation.lua
