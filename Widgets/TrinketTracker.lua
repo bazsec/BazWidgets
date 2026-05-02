@@ -100,6 +100,17 @@ end
 -- Refresh
 ---------------------------------------------------------------------------
 
+-- Updating the secure "item" attribute is taint-blocked during combat.
+-- We track the desired item link separately and only push it onto the
+-- secure attribute out of combat; pending updates flush on
+-- PLAYER_REGEN_ENABLED.
+local function SetItemAttributeSafe(btn, link)
+    btn._pendingItem = link
+    if InCombatLockdown() then return end
+    btn:SetAttribute("item", link or "")
+    btn._pendingItem = nil
+end
+
 local function RefreshSlot(btn)
     local slotID = btn.slotID
     local link = GetInventoryItemLink("player", slotID)
@@ -108,7 +119,7 @@ local function RefreshSlot(btn)
         btn.icon:SetTexture(icon or "Interface\\Icons\\INV_Misc_QuestionMark")
         btn.icon:Show()
         btn.empty:Hide()
-        btn:SetAttribute("item", link)
+        SetItemAttributeSafe(btn, link)
 
         -- Cooldown sweep
         local start, duration, enable = C_Container.GetItemCooldown and C_Container.GetItemCooldown(GetInventoryItemID("player", slotID) or 0)
@@ -125,11 +136,24 @@ local function RefreshSlot(btn)
     else
         btn.icon:Hide()
         btn.empty:Show()
-        btn:SetAttribute("item", "")
+        SetItemAttributeSafe(btn, "")
         btn.cd:Clear()
         return nil, nil
     end
 end
+
+-- Flush any pending item-attribute updates when combat ends.
+local combatFlush = CreateFrame("Frame")
+combatFlush:RegisterEvent("PLAYER_REGEN_ENABLED")
+combatFlush:SetScript("OnEvent", function()
+    if not frame then return end
+    for _, btn in ipairs({ frame.slot1, frame.slot2 }) do
+        if btn and btn._pendingItem ~= nil then
+            btn:SetAttribute("item", btn._pendingItem or "")
+            btn._pendingItem = nil
+        end
+    end
+end)
 
 function Trinket:Refresh()
     if not frame then return end
